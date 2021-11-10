@@ -36,9 +36,9 @@ class TianTianSpider(object):
     urlYear = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18303973379239507868_1634526975963&r=1634526976000&m=0&pageindex={}&sorttype=desc&SFName=STKNUM&IsSale=1&_=1634526976235"
     urlMonth = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18309756068947863759_1632273874569&r=1632273874000&m=8&pageindex={}&sorttype=desc&SFName=RATIO&IsSale=1&_=1632273874739"
 
-    optionals = ["010573", "350005", "001520", "001121", "008260", "008239", "009476",
-                 "001672", "007807", "002272", "002174", "004138", "000523", "400007", "003957"]
-    optionalsForBackup=["005232","005600","000934"]
+    optionals = ["010573", "350005", "001520", "001121","008239", "009476",
+                 "001672", "007807", "002272", "002174", "004138", "011082", "400007","003191"]
+    optionalsForBackup = []
 
 
     start = time.time()
@@ -57,10 +57,11 @@ class TianTianSpider(object):
                if dt['FCODE'] in optionalsForBackup:
                     data_list.append(dd)
         print(offset)
-        time.sleep(random.randint(1, 3))
+        time.sleep(random.randint(1, 3)/5.0)
 
     print("------------------------------开启最近一个月的数据添加--------------------------------------")
     rank=1
+    sumRank=0
     for offset in range(1, 250, 1):
         url = urlMonth.format(offset)
         dataMonth=getData(url)
@@ -69,6 +70,7 @@ class TianTianSpider(object):
             for dd in data_list:
                 if dt['FCODE'] in dd:
                     dd.insert(0,rank)
+                    sumRank+=rank
                     dd.append(round(dt['SUMPLACE'] / 10000.00, 2))
                     dd.append(str(dt['RATIO']) + "%")
                     if dt['FCODE'] in optionals:
@@ -76,10 +78,11 @@ class TianTianSpider(object):
                     if dt['FCODE'] in optionalsForBackup:
                         dd.append("---------来自xueqiu")
                         print(dd)
-                rank += 1
+            rank += 1
 
-        time.sleep(random.randint(1, 3))
+        time.sleep(random.randint(1, 3)/5.0)
 
     end = time.time()
+    print("平均的排名为：%1.f" %(sumRank/15))
     print('执行时间:%2.f' % ((end - start)/60)+"分钟")
 
