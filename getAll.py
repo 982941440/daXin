@@ -4,8 +4,6 @@ import random
 import ssl
 import requests
 import json
-import csv
-import numpy as np
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -61,7 +59,7 @@ class TianTianSpider(object):
 
     print("------------------------------开启最近一个月的数据添加--------------------------------------")
     rank=1
-    sumRank=0
+    sumRankRatio=0
     for offset in range(1, 250, 1):
         url = urlMonth.format(offset)
         dataMonth=getData(url)
@@ -69,8 +67,8 @@ class TianTianSpider(object):
         for i, dt in enumerate(dataMonth):
             for dd in data_list:
                 if dt['FCODE'] in dd:
-                    dd.insert(0,rank)
-                    sumRank+=rank
+                    dd.insert(0,str(round(rank/50.00, 1))+"%")
+                    sumRankRatio+=rank/50.00
                     dd.append(round(dt['SUMPLACE'] / 10000.00, 2))
                     dd.append(str(dt['RATIO']) + "%")
                     if dt['FCODE'] in optionals:
@@ -83,6 +81,6 @@ class TianTianSpider(object):
         time.sleep(random.randint(1, 3)/5.0)
 
     end = time.time()
-    print("平均的排名为：%1.f" %(sumRank/15))
+    print("平均的排名为：%1.f" %(sumRankRatio/15)+"%")
     print('执行时间:%2.f' % ((end - start)/60)+"分钟")
 
