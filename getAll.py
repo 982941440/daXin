@@ -34,10 +34,11 @@ class TianTianSpider(object):
     urlYear = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18303973379239507868_1634526975963&r=1634526976000&m=0&pageindex={}&sorttype=desc&SFName=STKNUM&IsSale=1&_=1634526976235"
     urlMonth = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18309756068947863759_1632273874569&r=1632273874000&m=8&pageindex={}&sorttype=desc&SFName=RATIO&IsSale=1&_=1632273874739"
 
-    optionals = ["010573", "350005", "001520", "001121","008239", "009476",
+    optionals = ["010573", "350005", "001520", "001121", "009476",
                  "001672", "007807", "002272", "002174", "004138", "011082", "400007","003191"]
-
     optionalsForBackup = []
+
+  #  fundsNum = len(optionals) + len(optionalsForBackup)
 
 
     start = time.time()
@@ -82,6 +83,7 @@ class TianTianSpider(object):
         time.sleep(random.randint(1, 3)/5.0)
 
     end = time.time()
-    print("平均的排名为：%1.f" %(sumRankRatio/15)+"%")
-    print('执行时间:%2.f' % ((end - start)/60)+"分钟")
+    print("匹配了"+len(data_list)+"个")
+    print("平均的排名为：%1.f" % (sumRankRatio / len(data_list)) + "%")
+    print('执行时间:%2.f' % ((end - start)/60)+"分钟"+'%2.f' % ((end - start)%60)+"秒")
 
