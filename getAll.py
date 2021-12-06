@@ -38,9 +38,6 @@ class TianTianSpider(object):
                  "001672", "007807", "002272", "002174", "004138", "011082", "400007","003191"]
     optionalsForBackup = []
 
-  #  fundsNum = len(optionals) + len(optionalsForBackup)
-
-
     start = time.time()
 
     data_list = []
@@ -83,7 +80,7 @@ class TianTianSpider(object):
         time.sleep(random.randint(1, 3)/5.0)
 
     end = time.time()
-    print("匹配了"+len(data_list)+"个")
+    print("匹配了：%1.f" % len(data_list) + "个")
     print("平均的排名为：%1.f" % (sumRankRatio / len(data_list)) + "%")
     print('执行时间:%2.f' % ((end - start)/60)+"分钟"+'%2.f' % ((end - start)%60)+"秒")
 
