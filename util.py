@@ -84,3 +84,22 @@ def saveData():
     print("匹配了：%1.f" % len(data_list) + "个")
     print("平均的排名为：%1.f" % (sumRankRatio / len(data_list)) + "%")
     print('执行时间:%2.f' % ((end - start) / 60) + "分钟" + '%2.f' % ((end - start) % 60) + "秒")
+
+def getStr():
+    url= "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18303973379239507868_1634526975963&r=1634526976000&m=0&pageindex={}&sorttype=desc&SFName=STKNUM&IsSale=1&_=1634526976235"
+
+    start = time.time()
+
+    str=""
+    for offset in range(1, 250, 1):
+        url = url.format(offset)
+        data = getData(url)
+
+        for i, dt in enumerate(data):
+           str=str+dt['SHORTNAME']
+        print(offset)
+        time.sleep(random.randint(1, 3) / 5.0)
+
+    end = time.time()
+    print('执行时间:%2.f' % ((end - start) / 60) + "分钟" + '%2.f' % ((end - start) % 60) + "秒")
+    return  str

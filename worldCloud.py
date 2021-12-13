@@ -1,19 +1,11 @@
 import jieba
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
+import util
 
 
 def chinese_word_cloud():
-    # 词云文本的路径
-    path = "./Chinese.txt"
-
-    # 打开文件读取
-    with open(path, 'r', encoding="utf-8") as f:
-        cut_text = f.read()
-        pass
-
-    # 打印读取结果
-    # print(cut_text)
+    cut_text=util.getStr()
 
     # jieba 分词
     jieba_str = jieba.cut(cut_text)
