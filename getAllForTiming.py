@@ -1,6 +1,4 @@
-from fake_useragent import UserAgent
 import time
-import random
 import ssl
 import util
 

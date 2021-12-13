@@ -5,7 +5,6 @@ import ssl
 import requests
 import json
 import csv
-import numpy as np
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
