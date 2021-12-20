@@ -40,7 +40,6 @@ class TianTianSpider(object):
             data_list = []
             optionals = ["006034", "007413", "003647", "005314", "005935", "003191", "007111", "002300",
                          "011147", "006080", "005983", "004315", "002051", "006133", "004784","010356"]
-            # optionalsForBackup=["005232","005600","000934"]
             optionalsForBackup = ["002505", "002718", "003166", "009614"]
 
             with open('fund.csv', 'a', encoding='utf-8-sig') as f:
