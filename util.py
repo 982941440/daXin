@@ -4,6 +4,12 @@ import json
 import time
 import random
 
+urlYear = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18303973379239507868_1634526975963&r=1634526976000&m=0&pageindex={}&sorttype=desc&SFName=STKNUM&IsSale=1&_=1634526976235"
+urlMonth = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18309756068947863759_1632273874569&r=1632273874000&m=8&pageindex={}&sorttype=desc&SFName=RATIO&IsSale=1&_=1632273874739"
+
+optionals = ["010573", "350005", "001520", "001121", "009476",
+                 "001672", "007807", "002272", "002174", "004138", "011082", "400007", "003191"]
+optionalsForBackup = []
 
 def getData(url):
     ua = UserAgent(verify_ssl=False)
@@ -26,15 +32,70 @@ def getData(url):
 
     return data
 
+def getYearData():
+    data_list = []
+    for offset in range(1, 250, 1):
+        url = urlYear.format(offset)
+        data = getData(url)
+
+        for i, dt in enumerate(data):
+            dd = [dt['FCODE'], dt['SHORTNAME'] + "\t" * (15 - len(str(dt['SHORTNAME']))), dt['STKNUM'],
+                  round(dt['SUMPLACE'] / 10000.00, 2), round(dt['ENDNAV'] / 100000000.00, 2)]
+
+            if dt['FCODE'] in optionals:
+                data_list.append(dd)
+            if dt['FCODE'] in optionalsForBackup:
+                data_list.append(dd)
+        print(offset)
+        time.sleep(random.randint(1, 3) / 5.0)
+    return  data_list
+
+def getMonthData():
+    data_list = []
+
+    rank = 1
+    for offset in range(1, 250, 1):
+        url = urlMonth.format(offset)
+        dataMonth = getData(url)
+
+        for i, dt in enumerate(dataMonth):
+            dd = [str(round(rank / 50.00, 1)) + "%",dt['FCODE'], round(dt['SUMPLACE'] / 10000.00, 2), str(dt['RATIO']) + "%"]
+
+            if dt['FCODE'] in optionals:
+               data_list.append(dd)
+            if dt['FCODE'] in optionalsForBackup:
+               dd.append("---------来自xueqiu")
+               data_list.append(dd)
+            rank += 1
+        time.sleep(random.randint(1, 3) / 5.0)
+
+    return  data_list
+
+
+def  printMergeData():
+    start = time.time()
+
+    yearDataList=getYearData()
+    monthDataList=getMonthData()
+
+    for dt in monthDataList:
+        for dd in yearDataList:
+              if dt[1] in dd[0]:
+                  # [dt['FCODE'], dt['SHORTNAME'] + "\t" * (15 - len(str(dt['SHORTNAME']))), dt['STKNUM'],
+                  #       round(dt['SUMPLACE'] / 10000.00, 2), round(dt['ENDNAV'] / 100000000.00, 2)]
+                  #
+                  # [str(round(rank / 50.00, 1)) + "%", dt['FCODE'], round(dt['SUMPLACE'] / 10000.00, 2),
+                  #       str(dt['RATIO']) + "%"]
+                  dt =[dt[0],dt[1],dd[1],dd[2],dt[2],dd[3],dd[4],dt[3]]
+                  print(dt)
+
+    end = time.time()
+    print('执行时间:%2.f' % ((end - start) / 60) + "分钟" + '%2.f' % ((end - start) % 60) + "秒")
+
+    return  monthDataList
+
 
 def saveData():
-    urlYear = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18303973379239507868_1634526975963&r=1634526976000&m=0&pageindex={}&sorttype=desc&SFName=STKNUM&IsSale=1&_=1634526976235"
-    urlMonth = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18309756068947863759_1632273874569&r=1632273874000&m=8&pageindex={}&sorttype=desc&SFName=RATIO&IsSale=1&_=1632273874739"
-
-    optionals = ["010573", "350005", "001520", "001121", "009476",
-                 "001672", "007807", "002272", "002174", "004138", "011082", "400007", "003191"]
-    optionalsForBackup = []
-
     start = time.time()
 
     data_list = []
