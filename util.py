@@ -3,6 +3,7 @@ import requests
 import json
 import time
 import random
+import csv
 
 urlYear = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18303973379239507868_1634526975963&r=1634526976000&m=0&pageindex={}&sorttype=desc&SFName=STKNUM&IsSale=1&_=1634526976235"
 urlMonth = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18309756068947863759_1632273874569&r=1632273874000&m=8&pageindex={}&sorttype=desc&SFName=RATIO&IsSale=1&_=1632273874739"
@@ -88,9 +89,16 @@ def  printMergeData():
                   #       str(dt['RATIO']) + "%"]
                   dt =[dt[0],dt[1],dd[1],dd[2],dt[2],dd[3],dd[4],dt[3]]
                   print(dt)
-
+      #  sumRankRatio +=
     end = time.time()
-    print('执行时间:%2.f' % ((end - start) / 60) + "分钟" + '%2.f' % ((end - start) % 60) + "秒")
+    logStr='执行时间:%2.f' % ((end - start) / 60) + "分钟" + '%2.f' % ((end - start) % 60) + "秒"
+    print(logStr)
+
+    rows = [
+        [logStr]
+    ]
+
+    saveToFile(rows)
 
     return  monthDataList
 
@@ -160,3 +168,11 @@ def getStr():
     end = time.time()
     print('执行时间:%2.f' % ((end - start) / 60) + "分钟" + '%2.f' % ((end - start) % 60) + "秒")
     return  str
+
+def  saveToFile(rows):
+     #headers = ['time']
+
+     with open('test.csv', 'a',encoding='utf-8-sig')as f:
+       f_csv = csv.writer(f)
+      # f_csv.writerow(headers)
+       f_csv.writerows(rows)
