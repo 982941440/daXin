@@ -8,8 +8,8 @@ import csv
 urlYear = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18303973379239507868_1634526975963&r=1634526976000&m=0&pageindex={}&sorttype=desc&SFName=STKNUM&IsSale=1&_=1634526976235"
 urlMonth = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18309756068947863759_1632273874569&r=1632273874000&m=8&pageindex={}&sorttype=desc&SFName=RATIO&IsSale=1&_=1632273874739"
 
-optionals = ["010573", "350005", "001520", "001121", "009476",
-                 "001672", "007807", "002272", "002174", "004138", "011082", "400007", "003191"]
+optionals = ["010573","001520","009476",
+             "007807", "002272", "002174","011082", "400007", "003191"]
 optionalsForBackup = []
 
 def getData(url):
