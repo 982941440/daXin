@@ -10,7 +10,9 @@ urlMonth = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18309756
 
 optionals = ["010573","001520","009476",
              "007807", "002272", "002174","011082", "400007", "003191"]
-optionalsForBackup = []
+optionalsForBackup = ["000656"]
+
+totalPage=275
 
 def getData(url):
     ua = UserAgent(verify_ssl=False)
@@ -35,7 +37,7 @@ def getData(url):
 
 def getYearData():
     data_list = []
-    for offset in range(1, 250, 1):
+    for offset in range(1, totalPage, 1):
         url = urlYear.format(offset)
         data = getData(url)
 
@@ -54,7 +56,7 @@ def getMonthData():
     data_list = []
 
     rank = 1
-    for offset in range(1, 250, 1):
+    for offset in range(1, totalPage, 1):
         url = urlMonth.format(offset)
         dataMonth = getData(url)
 
@@ -106,7 +108,7 @@ def saveData():
     start = time.time()
 
     data_list = []
-    for offset in range(1, 250, 1):
+    for offset in range(1, totalPage, 1):
         url = urlYear.format(offset)
         data = getData(url)
 
@@ -124,7 +126,7 @@ def saveData():
     print("------------------------------开启最近一个月的数据添加--------------------------------------")
     rank = 1
     sumRankRatio = 0
-    for offset in range(1, 250, 1):
+    for offset in range(1, totalPage, 1):
         url = urlMonth.format(offset)
         dataMonth = getData(url)
 
@@ -155,7 +157,7 @@ def getStr():
     start = time.time()
 
     str=""
-    for offset in range(1, 250, 1):
+    for offset in range(1, totalPage, 1):
         url = url.format(offset)
         data = getData(url)
 
