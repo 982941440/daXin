@@ -9,10 +9,10 @@ urlYear = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery183039733
 urlMonth = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18309756068947863759_1632273874569&r=1632273874000&m=8&pageindex={}&sorttype=desc&SFName=RATIO&IsSale=1&_=1632273874739"
 
 optionals = ["010573","001520","009476",
-             "007807", "002272", "002174","011082", "400007", "003191"]
+             "007807", "002272", "002174","011082", "400007", "003191","005776","003166","673020","001695"]
 optionalsForBackup = ["000656"]
 
-totalPage=275
+totalPage=270
 
 def getData(url):
     ua = UserAgent(verify_ssl=False)
@@ -90,13 +90,18 @@ def  printMergeData():
                   #       str(dt['RATIO']) + "%"]
                   dt =[dt[0],dt[1],dd[2],dt[2],dd[3],dd[4],dt[3],dd[1]]
                   print(dt)
+
+                  rows = [
+                      [dt]
+                  ]
+                  saveToFile(rows)
       #  sumRankRatio +=
     end = time.time()
     logStr='执行时间:%2.f' % ((end - start) / 60) + "分钟" + '%2.f' % ((end - start) % 60) + "秒"
     print(logStr)
 
     rows = [
-        [logStr]
+
     ]
 
     saveToFile(rows)
