@@ -12,7 +12,7 @@ optionals = ["010573","001520","009476",
              "007807", "002272", "002174","011082", "400007", "003191","005776","003166","673020","001695"]
 optionalsForBackup = ["000656"]
 
-totalPage=270
+totalPage=250
 
 def getData(url):
     ua = UserAgent(verify_ssl=False)
@@ -61,7 +61,7 @@ def getMonthData():
         dataMonth = getData(url)
 
         for i, dt in enumerate(dataMonth):
-            dd = [str(round(rank / 50.00, 1)) + "%",dt['FCODE'], round(dt['SUMPLACE'] / 10000.00, 2), str(dt['RATIO']) + "%"]
+            dd = [str(round(rank / 50.00, 1)) + "%",dt['FCODE'], round(dt['SUMPLACE'] / 10000.00, 2), str(dt['RATIO']) + "%",dt['MAXSG']]
 
             if dt['FCODE'] in optionals:
                data_list.append(dd)
@@ -88,7 +88,7 @@ def  printMergeData():
                   #
                   # [str(round(rank / 50.00, 1)) + "%", dt['FCODE'], round(dt['SUMPLACE'] / 10000.00, 2),
                   #       str(dt['RATIO']) + "%"]
-                  dt =[dt[0],dt[1],dd[2],dt[2],dd[3],dd[4],dt[3],dd[1]]
+                  dt =[dt[0],dt[1],dd[2],dt[2],dd[3],dd[4],dt[3],dd[4],dd[1]]
                   print(dt)
 
                   rows = [

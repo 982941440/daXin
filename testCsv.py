@@ -9,7 +9,7 @@ rows = [
         [2,'xiaoli','male',158,21]
     ]
 
-with open('test.csv','w')as f:
+with open('test1.csv','w')as f:
     f_csv = csv.writer(f)
     f_csv.writerow(headers)
     f_csv.writerows(rows)
