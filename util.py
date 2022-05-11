@@ -88,7 +88,7 @@ def  printMergeData():
                   #
                   # [str(round(rank / 50.00, 1)) + "%", dt['FCODE'], round(dt['SUMPLACE'] / 10000.00, 2),
                   #       str(dt['RATIO']) + "%"]
-                  dt =[dt[0],dt[1],dd[2],dt[2],dd[3],dd[4],dt[3],dd[4],dd[1]]
+                  dt =[dt[0],dt[1],dd[2],dt[2],dd[3],dd[4],dt[3],dt[4],dd[1]]
                   print(dt)
 
                   rows = [
