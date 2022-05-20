@@ -42,7 +42,10 @@ def getYearData():
         data = getData(url)
 
         for i, dt in enumerate(data):
-            dd = [dt['FCODE'], dt['SHORTNAME'], dt['STKNUM'],round(dt['SUMPLACE'] / 10000.00, 2), round(dt['ENDNAV'] / 100000000.00, 2)]
+            if  dt['SUMPLACE'] != "" and  dt['ENDNAV'] != "" :
+                dd = [dt['FCODE'], dt['SHORTNAME'], dt['STKNUM'],round(dt['SUMPLACE'] / 10000.00, 1),round(dt['ENDNAV']/ 100000000.00, 1)]
+
+                #dd = [dt['FCODE'], dt['SHORTNAME'], dt['STKNUM'],dt['SUMPLACE'],dt['ENDNAV']]
 
             if dt['FCODE'] in optionals:
                 data_list.append(dd)
@@ -101,7 +104,7 @@ def  printMergeData():
     print(logStr)
 
     rows = [
-
+     []
     ]
 
     saveToFile(rows)
