@@ -1,3 +1,5 @@
+import re
+
 from fake_useragent import UserAgent
 import requests
 import json
@@ -5,14 +7,17 @@ import time
 import random
 import csv
 
+from fontTools.misc import etree
+
 urlYear = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18303973379239507868_1634526975963&r=1634526976000&m=0&pageindex={}&sorttype=desc&SFName=STKNUM&IsSale=1&_=1634526976235"
 urlMonth = "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18309756068947863759_1632273874569&r=1632273874000&m=8&pageindex={}&sorttype=desc&SFName=RATIO&IsSale=1&_=1632273874739"
+urlInstitution = "http://fundf10.eastmoney.com/FundArchivesDatas.aspx?type=cyrjg&code={}&rt=0.7622758025769991"
 
-optionals = ["010573","001520","009476",
-             "007807", "002272", "002174","011082", "400007", "003191","005776","003166","673020","001695"]
-optionalsForBackup = ["000656"]
+optionals = ["001520","009476",
+            "002272", "002174","011082", "400007", "003191","005776","003166","673020","001695"]
+optionalsForBackup = ["000656","007807","010573","002943","010695","168105","003961","006327","270042 "]
 
-totalPage=250
+totalPage=300
 
 def getData(url):
     ua = UserAgent(verify_ssl=False)
@@ -37,6 +42,7 @@ def getData(url):
 
 def getYearData():
     data_list = []
+
     for offset in range(1, totalPage, 1):
         url = urlYear.format(offset)
         data = getData(url)
@@ -74,10 +80,31 @@ def getMonthData():
 
     return  data_list
 
+def getInstitutionPercent(code):
+    url = urlInstitution.format(code)
+    ua = UserAgent(verify_ssl=False)
+    headers = {
+        'User-Agent': ua.random,
+        "Referer": 'http://fund.eastmoney.com/data/dxgjj_xgccjjyl.html'
+    }
+    html = requests.get(
+        url=url,
+        headers=headers
+    ).content.decode('utf-8')
+    # str =html[225:231]
+    #保留数字
+    # institutionPercent=''.join(filter(lambda i: i in ['.'] or i.isdigit,html[220:235]))
+    institutionPercents=re.findall(r"\d+\.?\d*", html[220:235])
+
+    if len(institutionPercents)>0:
+      return institutionPercents[0]+"%"
+
+
+    return  "-----"
 
 def  printMergeData():
     start = time.time()
-
+    institutionPercent = getInstitutionPercent("002174")
     yearDataList=getYearData()
     monthDataList=getMonthData()
 
@@ -89,7 +116,8 @@ def  printMergeData():
                   #
                   # [str(round(rank / 50.00, 1)) + "%", dt['FCODE'], round(dt['SUMPLACE'] / 10000.00, 2),
                   #       str(dt['RATIO']) + "%"]
-                  dt =[dt[0],dt[1],dd[2],dt[2],dd[3],dd[4],dt[3],dt[4],dd[1]]
+                  institutionPercent=getInstitutionPercent(dt[1])
+                  dt =[dt[0],dt[1],dd[2],dt[2],dd[3],dd[4],dt[3],dt[4],institutionPercent,dd[1]]
                   print(dt)
 
                   rows = [
@@ -156,6 +184,7 @@ def saveData():
     print("匹配了：%1.f" % len(data_list) + "个")
     print("平均的排名为：%1.f" % (sumRankRatio / len(data_list)) + "%")
     print('执行时间:%2.f' % ((end - start) / 60) + "分钟" + '%2.f' % ((end - start) % 60) + "秒")
+
 
 def getStr():
     url= "http://fund.eastmoney.com/API/FundDXGJJ.ashx?callback=jQuery18303973379239507868_1634526975963&r=1634526976000&m=0&pageindex={}&sorttype=desc&SFName=STKNUM&IsSale=1&_=1634526976235"
